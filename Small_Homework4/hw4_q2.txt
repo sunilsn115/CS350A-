@@ -1,0 +1,45 @@
+instance Monad [] where
+xs >>= f = (concat (map f xs))
+return x = [x]
+concat :: [[a]] -> [a]
+concat [] = []
+concat ([] : xs) = concat xs
+concat ((x : xs) : ys) = x : concat (xs : ys)
+
+proof for obeying the monads laws
+
+Left identity: for all values of x
+LHS =return x >>= f
+[def. return] = [x] >>= f
+[def. >>=] = concat [f x]
+= f x
+= RHS
+
+Right identity: using making cases to prove it
+LHS =m >>= return
+[annotate the list m] = [m1,m2,...] >>= return
+[def. >>=] = concat (map return [m1,m2,...])
+[def. map (p. 9)] = concat [[m1],[m2],[...]]
+[apply concat] = [m1,m2,...]
+= m
+= RHS
+
+Associativity: using making cases to prove it like previous
+corollary:
+	m >>= f = [m1, m2, ...] >>= f
+	[def. >>=] = concat (map f [m1, m2, ...])
+	[def. map] = concat [f m1, f m2, ...]
+	[def. concat] = f m1 ++ f m2 ++ ...
+
+RHS = (m >>= f) >>= g
+[corollary] = (f m1 ++ f m2 ++ ...) >>= g
+[def. >>=] = concat (map g (f m1 ++ f m2 ++ ...))
+[distribute map over ++] = concat(map g (f m1) ++ map g (f m2) ++ ...)
+[distribute concat over map] = concat (map g (f m1)) ++ concat (map g (f m2)) ++ ...
+
+LHS = m >>= (\x -> f x >>= g)
+[corollary] = f m1 >>= g ++ f m2 >>= g ++ ...
+[def. >>=] = concat (map g (f m1)) ++ concat (map g (f m2)) ++ ...
+
+so RHS=LHS
+hence proved
