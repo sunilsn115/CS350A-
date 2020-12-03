@@ -1,0 +1,5 @@
+fib a b = a:(fib b (a+b))
+ans=do
+   n<-getLine
+   let x=read n :: Int
+   print(last (take x (fib 0 1)))

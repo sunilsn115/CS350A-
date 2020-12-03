@@ -1,0 +1,18 @@
+fun op=do
+   n<-getLine
+   let x=read n :: Int
+   if(x+1==0) then
+      print(op)
+   else fun (x+op)
+main=fun 0
+
+
+
+
+fun1 op=getLine >>= \n->
+ let x=read n::Int
+ in 
+ if(x+1==0) then
+   print(op)
+ else fun1 (x+op)
+main1=fun1 0
