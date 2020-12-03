@@ -1,0 +1,27 @@
+data Maybe a = Nothing | Just a
+return :: a -> Maybe a
+(>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b 
+instance Monad Maybe where
+   return x      = Just x
+   Nothing >>= f = Nothing
+   Just x  >>= f = f x
+
+
+
+proof for obeying the monads laws
+
+left identity: for all values a
+return a >>= f = Just a >>= f = f a   [using {definition of return},{definition of >>=}]
+
+Right identity: using making cases to prove it
+Case 1: m = Nothing
+Nothing >>= return = Nothing   [using {definition of >>=}]
+Case 2: m = Just x ,for some value x.
+Just x >>= return = return a = Just a     [using {definition of >>=},{definition of return}]
+
+Associativity: using making cases to prove it like previous
+Case 1: m = Nothing 
+(Nothing >>= f) >>= g = Nothing >>= g = Nothing = Nothing >>= (\x -> f x >>= g)    [using {definition of >>=},{definition of >>=},{definition of >>=, applied reverse}]
+Case 2: m = Just a ,for some value a.
+(Just a >>= f) >>= g = f a >>= g = (\x -> f x >>= g) a = Just a >>= (\x -> f x >>= g)
+[using {definition of >>=},{application of a lambda abstraction, applied reverse},{definition of >>=, applied reverse}]
